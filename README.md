@@ -1,7 +1,7 @@
 # Hardware Project Tamuhack 2025 (to be named)
 
 ## Architecture
-![Architecture](./public/diagram.png)
+![Architecture](./diagram.png)
 
 ## Client Development
 
