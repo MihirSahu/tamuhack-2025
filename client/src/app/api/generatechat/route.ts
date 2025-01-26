@@ -8,7 +8,7 @@ export async function POST(req: Request) {
   const prompt = `Analyze this sensor data and provide a brief summary of current conditions and wildfire risk:
   Temperature: ${latestReading.Temperature}°C
   Humidity: ${latestReading.Humidity}%
-  Soil Moisture Level: ${latestReading.SoilMoisture} ppm
+  Soil Moisture Level: ${latestReading.SoilMoisture}%
 
   Provide a 2-3 sentence summary including:
   1. Current conditions
