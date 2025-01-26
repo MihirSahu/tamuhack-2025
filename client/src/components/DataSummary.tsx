@@ -2,8 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
+import { useNotes } from '@/context/NotesContext';
 
 export default function DataSummary({ data }: { data: any[] }) {
+  const { notes } = useNotes();
   const [summary, setSummary] = useState('Analyzing conditions...');
 
   useEffect(() => {
@@ -14,7 +16,7 @@ export default function DataSummary({ data }: { data: any[] }) {
       const response = await fetch('/api/generatechat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ latestReading })
+        body: JSON.stringify({ latestReading, notes })
       });
 
       const result = await response.json();
@@ -22,7 +24,7 @@ export default function DataSummary({ data }: { data: any[] }) {
     }
 
     generateSummary();
-  }, [data]);
+  }, [data, notes]);
 
   return (
     <Card className="w-full mb-8">

@@ -6,7 +6,7 @@ import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent, ChartLe
 import Chatbot from "@/components/chatbot"
 import LongBarChart from "@/components/longBarChart"
 import LongAreaChart from "@/components/longAreaChart"
-import DataSummary from "@/components/DataSummary"
+//import DataSummary from "@/components/DataSummary"
 
 export default function Home() {
   const [data, setData] = useState(null);
@@ -54,9 +54,11 @@ export default function Home() {
 
   return (
     <div className="flex flex-col justify-center items-center">
+      {/*
       <div className="w-full px-4">
         {data && <DataSummary data={data} />}
-      </div>
+      </div> 
+      */}
       <div className="flex flex-col w-full">
         <LongBarChart />
         <LongAreaChart />

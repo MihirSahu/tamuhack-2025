@@ -3,9 +3,11 @@
 import { useChat } from 'ai/react';
 import { Send, Minimize2, Maximize2 } from 'lucide-react';
 import { useState } from 'react';
+import { useNotes } from '@/context/NotesContext';
 
 export default function Chat() {
   const { messages, input, handleInputChange, handleSubmit } = useChat();
+  const { notes } = useNotes();
   const [isMinimized, setIsMinimized] = useState(true);
 
   return (
