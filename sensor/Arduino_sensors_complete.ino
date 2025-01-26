@@ -1,36 +1,60 @@
 #include <DHT.h>
-
+#include <Wire.h>
+#include <RTClib.h>
 
 // DHT11 Configuration
-#define DHTPIN 6          // DHT11 DATA pin connected to digital pin 6
-#define DHTTYPE DHT11     // Specify the DHT sensor type
-DHT dht(DHTPIN, DHTTYPE); // Create a DHT object
+#define DHTPIN 6
+#define DHTTYPE DHT11
+DHT dht(DHTPIN, DHTTYPE);
+
+#define WATER_SENSOR_PIN A0
+
+RTC_DS1307 rtc;
 
 void setup() {
   Serial.begin(9600);
-  Serial.println("DHT11 Test");
+  Serial.println("Initializing sensors...");
 
-  // Initialize the DHT sensor
   dht.begin();
+
+  if (!rtc.begin()) {
+    Serial.println("Couldn't find RTC");
+    while (1);
+  }
+
+  if (!rtc.isrunning()) {
+    rtc.adjust(DateTime(2025, 1, 26, 2, 14, 0));
+  }
+
+  pinMode(WATER_SENSOR_PIN, INPUT);
 }
 
 void loop() {
-  Serial.println("DATA READING:");
-  // **DHT11 Sensor Readings**
-  float temperature = dht.readTemperature(); // Read temperature in Celsius
-  float humidity = dht.readHumidity();       // Read humidity in percentage
+  DateTime now = rtc.now();
+  
+  // Format timestamp
+  char timestamp[20];
+  sprintf(timestamp, "%04d-%02d-%02d %02d:%02d:%02d",
+          now.year(), now.month(), now.day(),
+          now.hour(), now.minute(), now.second());
 
-  if (isnan(temperature) || isnan(humidity)) {
-    Serial.println("Failed to read from DHT sensor!");
-  } else {
-    Serial.print("Temperature: ");
-    Serial.print(temperature);
-    Serial.println(" °C");
+  // Read sensors
+  float temperature = dht.readTemperature();
+  float humidity = dht.readHumidity();
+  int waterLevel = analogRead(WATER_SENSOR_PIN);
+  float moisturePercentage = map(waterLevel, 20, 250, 0, 100);
 
-    Serial.print("Humidity: ");
-    Serial.print(humidity);
-    Serial.println(" %");
-  }
-  // Delay before the next reading
+  // Send data in JSON format
+  Serial.print("{\"timestamp\":\"");
+  Serial.print(timestamp);
+  Serial.print("\",\"Temperature\":");
+  Serial.print(isnan(temperature) ? 0 : temperature);
+  Serial.print(",\"Humidity\":");
+  Serial.print(isnan(humidity) ? 0 : humidity);
+  Serial.print(",\"SoilMoisture\":");
+  Serial.print(moisturePercentage);
+  Serial.println("}");
+
   delay(5000);
 }
+
