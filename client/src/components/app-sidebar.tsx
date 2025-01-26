@@ -35,7 +35,7 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="text-2xl font-bold">FireSense</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-2xl font-bold">FireGrid</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (

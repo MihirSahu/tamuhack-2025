@@ -27,7 +27,7 @@ export default function Chat() {
       {/* Chat header */}
       <div className="p-4 border-b dark:border-zinc-700 flex justify-between items-center cursor-pointer"
            onClick={() => setIsMinimized(!isMinimized)}>
-        <h2 className="text-lg font-semibold">FireSense Assistant</h2>
+        <h2 className="text-lg font-semibold">FireGrid Assistant</h2>
         <button
           className="p-1 hover:bg-gray-100 dark:hover:bg-zinc-700 rounded-full transition-colors"
         >
