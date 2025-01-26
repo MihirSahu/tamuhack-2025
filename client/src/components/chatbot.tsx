@@ -10,14 +10,14 @@ export default function Chat() {
 
   return (
     <div 
-      className={`fixed bottom-4 right-4 flex flex-col w-full max-w-md bg-white dark:bg-zinc-800 rounded-lg shadow-lg transition-all duration-300 ease-in-out ${
+      className={`fixed bottom-4 right-4 flex flex-col w-96 max-w-md bg-white dark:bg-zinc-800 rounded-lg shadow-lg transition-all duration-300 ease-in-out ${
         isMinimized ? 'h-[60px]' : 'h-[600px]'
       }`}
     >
       {/* Chat header */}
       <div className="p-4 border-b dark:border-zinc-700 flex justify-between items-center cursor-pointer"
            onClick={() => setIsMinimized(!isMinimized)}>
-        <h2 className="text-lg font-semibold">Assistant</h2>
+        <h2 className="text-lg font-semibold">FireSense Assistant</h2>
         <button
           className="p-1 hover:bg-gray-100 dark:hover:bg-zinc-700 rounded-full transition-colors"
         >
