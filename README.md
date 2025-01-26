@@ -15,3 +15,6 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## RPI Worker
 TBD
+
+## AI Cloudflare Worker
+Deprecated. Using Vercel AI SDK instead.
