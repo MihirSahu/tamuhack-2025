@@ -16,6 +16,8 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
+
+/*
 const chartData = [
   { date: "2024-04-01", desktop: 222, mobile: 150 },
   { date: "2024-04-02", desktop: 97, mobile: 180 },
@@ -109,44 +111,42 @@ const chartData = [
   { date: "2024-06-29", desktop: 103, mobile: 160 },
   { date: "2024-06-30", desktop: 446, mobile: 400 },
 ]
+*/
 
 const chartConfig = {
   views: {
-    label: "Page Views",
+    label: "Temperature (C)",
   },
-  desktop: {
-    label: "Desktop",
+  Temperature: {
+    label: "Temperature (F)",
     color: "hsl(var(--chart-1))",
-  },
-  mobile: {
-    label: "Mobile",
-    color: "hsl(var(--chart-2))",
   },
 } satisfies ChartConfig
 
 export default function LongBarChart() {
   const [activeChart, setActiveChart] =
-    React.useState<keyof typeof chartConfig>("desktop")
+    React.useState<keyof typeof chartConfig>("Temperature")
+  const [data, setData] = React.useState<any[]>([]);
 
-  const total = React.useMemo(
-    () => ({
-      desktop: chartData.reduce((acc, curr) => acc + curr.desktop, 0),
-      mobile: chartData.reduce((acc, curr) => acc + curr.mobile, 0),
-    }),
-    []
-  )
+  React.useEffect(() => {
+    fetch('/api/read')
+      .then(res => res.json())
+      .then(data => {
+        setData(data);
+      });
+  }, []);
 
   return (
     <Card>
       <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
         <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
-          <CardTitle>Bar Chart - Interactive</CardTitle>
+          <CardTitle>Bar Chart - Temperature</CardTitle>
           <CardDescription>
-            Showing total visitors for the last 3 months
+            Showing temperature readings for the last 24 hours
           </CardDescription>
         </div>
         <div className="flex">
-          {["desktop", "mobile"].map((key) => {
+          {["Temperature"].map((key) => {
             const chart = key as keyof typeof chartConfig
             return (
               <button
@@ -157,9 +157,6 @@ export default function LongBarChart() {
               >
                 <span className="text-xs text-muted-foreground">
                   {chartConfig[chart].label}
-                </span>
-                <span className="text-lg font-bold leading-none sm:text-3xl">
-                  {total[key as keyof typeof total].toLocaleString()}
                 </span>
               </button>
             )
@@ -173,7 +170,7 @@ export default function LongBarChart() {
         >
           <BarChart
             accessibilityLayer
-            data={chartData}
+            data={data}
             margin={{
               left: 12,
               right: 12,
@@ -181,7 +178,7 @@ export default function LongBarChart() {
           >
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="date"
+              dataKey="timestamp"
               tickLine={false}
               axisLine={false}
               tickMargin={8}
@@ -189,8 +186,8 @@ export default function LongBarChart() {
               tickFormatter={(value) => {
                 const date = new Date(value)
                 return date.toLocaleDateString("en-US", {
-                  month: "short",
-                  day: "numeric",
+                  hour: "numeric",
+                  minute: "numeric",
                 })
               }}
             />
