@@ -11,18 +11,29 @@
  * Learn more at https://developers.cloudflare.com/workers/
  */
 
-export interface Env {
-  // If you set another name in wrangler.toml as the value for 'binding',
-  // replace "AI" with the variable name you defined.
+import { createWorkersAI } from 'workers-ai-provider';
+import { streamText } from 'ai';
+
+type Env = {
   AI: Ai;
-}
+};
 
 export default {
-  async fetch(request, env): Promise<Response> {
-    const response = await env.AI.run("@cf/meta/llama-3.1-8b-instruct", {
-      prompt: "What is the origin of the word 'assassin'?",
+  async fetch(_: Request, env: Env) {
+    const workersai = createWorkersAI({ binding: env.AI });
+    const result = streamText({
+      model: workersai('@cf/meta/llama-2-7b-chat-int8'),
+      prompt: 'Write a 50-word essay about hello world.',
     });
 
-    return new Response(JSON.stringify(response));
+    return result.toTextStreamResponse({
+      headers: {
+        // add these headers to ensure that the
+        // response is chunked and streamed
+        'Content-Type': 'text/x-unknown',
+        'content-encoding': 'identity',
+        'transfer-encoding': 'chunked',
+      },
+    });
   },
-} satisfies ExportedHandler<Env>;
+};
