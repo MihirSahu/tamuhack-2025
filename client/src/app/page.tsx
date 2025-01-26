@@ -64,9 +64,9 @@ export default function Home() {
         {data && <DataSummary data={data} />}
       </div> 
       <div className="flex flex-col w-full gap-6">
-        <SensorAreaChart title="Temperature" dataKey="Temperature" data={data} />
-        <SensorAreaChart title="Humidity" dataKey="Humidity" data={data} />
-        <SensorAreaChart title="Soil Moisture" dataKey="SoilMoisture" data={data} />
+        <SensorAreaChart title="Temperature (C)" dataKey="Temperature" data={data} />
+        <SensorAreaChart title="Humidity (%)" dataKey="Humidity" data={data} />
+        <SensorAreaChart title="Soil Moisture (%)" dataKey="SoilMoisture" data={data} />
       </div>
       <div className="w-1/2 mt-8">
         <Chatbot />

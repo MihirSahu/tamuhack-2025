@@ -116,6 +116,8 @@ export default function SensorAreaChart({ title, dataKey, data }: SensorAreaChar
                 return date.toLocaleDateString("en-US", {
                   month: "short",
                   day: "numeric",
+                  hour: "numeric",
+                  minute: "numeric",
                 })
               }}
             />

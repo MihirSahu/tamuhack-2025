@@ -6,9 +6,17 @@ import { useState } from 'react';
 import { useNotes } from '@/context/NotesContext';
 
 export default function Chat() {
-  const { messages, input, handleInputChange, handleSubmit } = useChat();
-  const { notes } = useNotes();
   const [isMinimized, setIsMinimized] = useState(true);
+  const { notes } = useNotes();
+  const { messages, input, handleInputChange, handleSubmit } = useChat({
+    body: { notes }, // Pass notes to the API
+    api: '/api/chat',
+  });
+
+  const handleChatSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    handleSubmit(e);
+  };
 
   return (
     <div 
@@ -51,7 +59,7 @@ export default function Chat() {
 
       {/* Input form - hidden when minimized */}
       <form 
-        onSubmit={handleSubmit} 
+        onSubmit={handleChatSubmit} 
         className={`p-4 border-t dark:border-zinc-700 ${isMinimized ? 'hidden' : ''}`}
       >
         <div className="flex items-center gap-2">
