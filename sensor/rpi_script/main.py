@@ -11,4 +11,4 @@ while True:
     }
     response = requests.post(WORKER_URL, json=data)
     print(f"Server response: {response.text}")
-    time.sleep(10)  # Send data every 10 seconds
+    time.sleep(5)  # Send data every 10 seconds
