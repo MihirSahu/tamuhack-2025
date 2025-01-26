@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
-
 import {
   Card,
   CardContent,
@@ -26,24 +25,21 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-const chartConfig = {
-  temperature: {
-    label: "Temperature",
-    color: "hsl(var(--chart-1))",
-  },
-} satisfies ChartConfig
+interface SensorAreaChartProps {
+  title: string;
+  dataKey: string;
+  data: any[];
+}
 
-export default function LongAreaChart() {
+export default function SensorAreaChart({ title, dataKey, data }: SensorAreaChartProps) {
   const [timeRange, setTimeRange] = React.useState("90d")
-  const [data, setData] = React.useState<any[]>([]);
 
-  React.useEffect(() => {
-    fetch('/api/read')
-      .then(res => res.json())
-      .then(sensors => {
-        setData(sensors);
-      });
-  }, []);
+  const chartConfig = {
+    [dataKey]: {
+      label: title,
+      color: "hsl(var(--chart-1))",
+    },
+  } satisfies ChartConfig
 
   const filteredData = data.filter((item) => {
     const date = new Date(item.timestamp)
@@ -63,9 +59,9 @@ export default function LongAreaChart() {
     <Card>
       <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
         <div className="grid flex-1 gap-1 text-center sm:text-left">
-          <CardTitle>Area Chart - Temperature</CardTitle>
+          <CardTitle>Area Chart - {title}</CardTitle>
           <CardDescription>
-            Showing temperature readings over time
+            Showing {title.toLowerCase()} readings over time
           </CardDescription>
         </div>
         <Select value={timeRange} onValueChange={setTimeRange}>
@@ -95,7 +91,7 @@ export default function LongAreaChart() {
         >
           <AreaChart data={filteredData}>
             <defs>
-              <linearGradient id="fillTemp" x1="0" y1="0" x2="0" y2="1">
+              <linearGradient id={`fill${dataKey}`} x1="0" y1="0" x2="0" y2="1">
                 <stop
                   offset="5%"
                   stopColor="var(--chart-1)"
@@ -140,9 +136,9 @@ export default function LongAreaChart() {
               }
             />
             <Area
-              dataKey="Temperature"
+              dataKey={dataKey}
               type="natural"
-              fill="url(#fillTemp)"
+              fill={`url(#fill${dataKey})`}
               stroke="var(--chart-1)"
             />
             <ChartLegend content={<ChartLegendContent />} />
@@ -151,4 +147,4 @@ export default function LongAreaChart() {
       </CardContent>
     </Card>
   )
-}
+} 
