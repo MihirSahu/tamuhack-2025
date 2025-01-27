@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
   const { latestReading, notes } = await req.json();
-  console.log(latestReading, notes);
+  // console.log(latestReading, notes);
 
   const prompt = `Analyze this sensor data and provide a brief summary of current conditions and wildfire risk:
   Temperature: ${latestReading.Temperature}°C
