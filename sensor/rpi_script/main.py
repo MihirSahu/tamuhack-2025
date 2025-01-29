@@ -4,7 +4,7 @@ from pymongo import MongoClient
 import time
 
 # MongoDB Atlas Configuration
-MONGO_URI = "mongodb+srv://<firesense>:<tamuhack>@firesense.kc7vl.mongodb.net/?retryWrites=true&w=majority&appName=firesense"  # Replace with your connection string
+MONGO_URI = ""  # Replace with your connection string
 DB_NAME = "sensor_data"
 COLLECTION_NAME = "readings"
 
